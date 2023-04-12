@@ -12,7 +12,7 @@ ftp_directory = '/12b/ftp'
 authorizer = DummyAuthorizer()
 authorizer.add_user(ftp_username, ftp_password, ftp_directory, perm='elradfmwMT')
 
-# Define the FTP handler
+# Define the FTP handler лк;ксфгксдфс
 handler = FTPHandler
 handler.authorizer = authorizer
 
