@@ -94,6 +94,12 @@ class FtpClient(QMainWindow):
             except:
                 self.status_text.append(f"Error uploading file {filename}")
 
+
+
+
+
+
+
     def download_file(self):
         # Prompt the user to select a remote file to download
         remote_path, _ = QFileDialog.getOpenFileName(self, "Select File to Download", filter="All Files (*)")
