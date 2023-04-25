@@ -119,6 +119,7 @@ class FtpClient(QMainWindow):
             except:
                 self.status_text.append(f"Error deleting file {filename}")
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FtpClient()

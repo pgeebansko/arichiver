@@ -7,7 +7,8 @@ ftp_port = 2121
 ftp_username = 'username'
 ftp_password = 'password'
 ftp_directory = '/12b/ftp'
-нтжо
+
+
 # Define the user authorizer
 authorizer = DummyAuthorizer()
 authorizer.add_user(ftp_username, ftp_password, ftp_directory, perm='elradfmwMT')
