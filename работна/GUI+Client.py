@@ -111,7 +111,6 @@ class FtpClient(QMainWindow):
         # Prompt the user to select a file to delete
         file_path, _ = QFileDialog.getOpenFileName(self, "Select File to Delete")
         if file_path:
-
             # Get the filename and delete the file from the FTP server
             filename = file_path.split("/")[-1]
             try:
@@ -119,7 +118,6 @@ class FtpClient(QMainWindow):
                 self.status_text.append(f"File {filename} deleted successfully")
             except:
                 self.status_text.append(f"Error deleting file {filename}")
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

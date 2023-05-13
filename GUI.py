@@ -6,6 +6,12 @@ import sys
 class FtpClient(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.delete_button = None
+        self.status_text = None
+        self.download_button = None
+        self.upload_button = None
+        self.disconnect_button = None
+        self.connect_button = None
         self.init_ui()
 
     def init_ui(self):
@@ -16,7 +22,7 @@ class FtpClient(QMainWindow):
         self.connect_button = QPushButton("Connect", self)
         self.connect_button.move(10, 10)
         self.connect_button.clicked.connect(self.connect_ftp)
-
+        
         self.disconnect_button = QPushButton("Disconnect", self)
         self.disconnect_button.move(110, 10)
         self.disconnect_button.setEnabled(False)

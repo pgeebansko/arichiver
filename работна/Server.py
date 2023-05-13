@@ -2,14 +2,11 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
-
-IP_ADDRESS = '127.0.0.1'
 # Define the FTP server settings
 ftp_port = 2121
 ftp_username = 'username'
 ftp_password = 'password'
 ftp_directory = '/12b/ftp'
-
 
 # Define the user authorizer
 authorizer = DummyAuthorizer()
@@ -20,5 +17,5 @@ handler = FTPHandler
 handler.authorizer = authorizer
 
 # Start the FTP server
-server = FTPServer((IP_ADDRESS, ftp_port), handler)
+server = FTPServer(('192.168.99.104', ftp_port), handler)
 server.serve_forever()

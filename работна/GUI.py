@@ -1,6 +1,5 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QLineEdit, QPushButton, QLabel, QInputDialog, QTextEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QTextEdit, QInputDialog
 from PyQt5.QtGui import QIcon
-from ftplib import FTP
 import sys
 
 
@@ -43,8 +42,8 @@ class FtpClient(QMainWindow):
         self.status_text.setGeometry(10, 50, 480, 240)
         self.status_text.setReadOnly(True)
 
-        # Create the FTP object
-        self.ftp = FTP()
+        # Show the window
+        self.show()
 
     def connect_ftp(self):
         # Prompt the user for the FTP server details
@@ -54,32 +53,22 @@ class FtpClient(QMainWindow):
             if ok:
                 user, ok = QInputDialog.getText(self, "Connect to FTP Server", "Enter user name:")
                 if ok:
-                    password, ok = QInputDialog.getText(self, "Connect to FTP Server", "Enter password:", QLineEdit.Password)
+                    password, ok = QInputDialog.getText(self, "Connect to FTP Server", "Enter password:")
                     if ok:
-                        try:
-                            self.ftp.connect(host, port)
-                            self.ftp.login(user, password)
-                            self.status_text.append(f"Connected to FTP server {host}:{port}")
-                            self.connect_button.setEnabled(False)
-                            self.disconnect_button.setEnabled(True)
-                            self.upload_button.setEnabled(True)
-                            self.download_button.setEnabled(True)
-                            self.delete_button.setEnabled(True)
-                        except:
-                            self.status_text.append(f"Could not connect to FTP server {host}:{port}")
+                        self.status_text.append(f"Connected to FTP server {host}:{port}")
+                        self.connect_button.setEnabled(False)
+                        self.disconnect_button.setEnabled(True)
+                        self.upload_button.setEnabled(True)
+                        self.download_button.setEnabled(True)
+                        self.delete_button.setEnabled(True)
 
     def disconnect_ftp(self):
         # Disconnect from the FTP server
-        try:
-            self.ftp.quit()
-            self.status_text.append("Disconnected from FTP server")
-            self.connect_button.setEnabled(True)
-            self.disconnect_button.setEnabled(False)
-            self.upload_button.setEnabled(False)
-            self.download_button.setEnabled(False)
-            self.delete_button.setEnabled(False)
-        except:
-            self.status_text.append("Could not disconnect from FTP server")
+        self.status_text.append("Disconnected from FTP server")
+        self.connect_button.setEnabled(True)
+        self.disconnect_button.setEnabled(False)
+        self.upload_button.setEnabled(False)
+        self.download_button.setEnabled(False)
 
     def upload_file(self):
         # Prompt the user to select a file to upload
@@ -87,12 +76,7 @@ class FtpClient(QMainWindow):
         if file_path:
             # Get the filename and upload the file to the FTP server
             filename = file_path.split("/")[-1]
-            try:
-                with open(filename, "rb") as f:
-                    self.ftp.storbinary("STOR " + filename, f)
-                self.status_text.append(f"File {filename} uploaded successfully")
-            except:
-                self.status_text.append(f"Error uploading file {filename}")
+            self.status_text.append(f"File {filename} uploaded successfully")
 
     def download_file(self):
         # Prompt the user to select a remote file to download
@@ -100,30 +84,26 @@ class FtpClient(QMainWindow):
         if remote_path:
             # Get the filename and download the file from the FTP server
             filename = remote_path.split("/")[-1]
-            try:
-                with open(filename, "wb") as f:
-                    self.ftp.retrbinary("RETR " + filename, f.write)
-                self.status_text.append(f"File {filename} downloaded successfully")
-            except:
-                self.status_text.append(f"Error downloading file {filename}")
+            self.status_text.append(f"File {filename} downloaded successfully")
 
     def delete_file(self):
-        # Prompt the user to select a file to delete
-        file_path, _ = QFileDialog.getOpenFileName(self, "Select File to Delete")
-        if file_path:
+        # Prompt the user to select a remote file to delete
+        remote_path, _ = QFileDialog.getOpenFileName(self, "Select File to Delete")
+        if remote_path:
+            # Get the filename and prompt the user to confirm deletion
+            filename = remote_path.split("/")[-1]
+            confirm_delete, _ = QInputDialog.getMultiLineText(self, "Delete File",
+                                                              f"Are you sure you want to delete {filename}?")
 
-            # Get the filename and delete the file from the FTP server
-            filename = file_path.split("/")[-1]
-            try:
-                self.ftp.delete(filename)
+            if confirm_delete.strip().lower() == "yes":
+                # Delete the file from the FTP server
                 self.status_text.append(f"File {filename} deleted successfully")
-            except:
-                self.status_text.append(f"Error deleting file {filename}")
+            else:
+                self.status_text.append("File deletion cancelled")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = FtpClient()
-    window.show()
+    ftp_client = FtpClient()
     sys.exit(app.exec_())
 
