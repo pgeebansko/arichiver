@@ -111,6 +111,7 @@ class FtpClient(QMainWindow):
         # Prompt the user to select a file to delete
         file_path, _ = QFileDialog.getOpenFileName(self, "Select File to Delete")
         if file_path:
+
             # Get the filename and delete the file from the FTP server
             filename = file_path.split("/")[-1]
             try:
