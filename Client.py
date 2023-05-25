@@ -1,10 +1,10 @@
 import ftplib
-
+import load_settings as settings
 # set up connection parameters
-ftp_server = '192.168.99.103'
-ftp_port = 2121
-ftp_username = 'USER3'
-ftp_password = '2121'
+ftp_server = settings.address
+ftp_port = settings.Port
+ftp_username = settings.user
+ftp_password = settings.password
 
 # connect to FTP server
 ftp = ftplib.FTP()
