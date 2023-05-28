@@ -1,33 +1,30 @@
 import ftplib
+import Client_settings
+import glob
+import time
 
-# set up connection parameters
-ftp_server = '192.168.99.103'
-ftp_port = 2121
-ftp_username = 'USER3'
-ftp_password = '2121'
 
-# connect to FTP server
-ftp = ftplib.FTP()
-ftp.connect(ftp_server, ftp_port)
-ftp.login(ftp_username, ftp_password)
+# четене на конфигурационните параметри
+settings = Client_settings.Settings()
 
-# list files on server
-print('Files on server:')
-files = ftp.dir()
-print(files)
+while True:
+    dir_path = settings.working_dir + settings.file_type
+    res = glob.glob(dir_path, recursive=True)
+    print(res)
 
-with open('test.txt', 'w') as f:
-    f.write('This is a test file.')
+    # свързване с FTP сървъра
+    ftp = ftplib.FTP()
 
-# upload file to server
-filename = 'test.txt'
-with open(filename, 'rb') as f:
-    ftp.storbinary(f'STOR {filename}', f)
+    for path in res:
+        # обхождам файл по файл целия списък на файлове от папката
+        ftp.connect(settings.ftp_server, settings.ftp_port)
+        ftp.login(settings.ftp_username, settings.ftp_password)
 
-# download file from server
-filename = 'test.txt'
-with open(filename, 'wb') as f:
-    ftp.retrbinary(f'RETR {filename}', f.write)
+        # upload file to server
+        filename = 'test.txt'
+        with open(filename, 'rb') as f:
+            ftp.storbinary(f'STOR {filename}', f)
 
-# close connection
-ftp.quit()
+    # close connection
+    ftp.quit()
+    time.sleep(10)

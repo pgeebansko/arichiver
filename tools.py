@@ -8,3 +8,6 @@ res = glob.glob(dir_path, recursive=True)
 print(res)
 for path in res:
     print('*****'+path)
+
+
+
