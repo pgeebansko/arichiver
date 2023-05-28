@@ -19,7 +19,7 @@ class Settings:
         self.config.read(INI_FILE_NAME)
 
         self.ftp_server = self.config.get('SERVER', 'IP_address')
-        self.ftp_port = self.config.get('SERVER', 'port')
+        self.ftp_port = int(self.config.get('SERVER', 'port'))
         self.ftp_username = self.config.get('USER', 'name')
         self.ftp_password = self.config.get('USER', 'password')
         self.file_type = self.config.get('FILES', 'type')
